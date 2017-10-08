@@ -9,8 +9,8 @@ namespace WatchDog
 {
     public class PollingWatcher : AbstractWatcher, IPollable
     {
-        public Timer Timer { get; set; }
-        public double PollInterval { get; set; }
+        public Timer Timer { get; private set; }
+        public double PollInterval { get; private set; }
         
         public PollingWatcher(string path)
         {
