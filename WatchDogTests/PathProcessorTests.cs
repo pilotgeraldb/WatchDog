@@ -7,64 +7,38 @@ using System.Threading.Tasks;
 using WatchDog.Changes;
 using WatchDog.Paths;
 using Xunit;
+using WatchDogTests.Helpers;
 
 namespace WatchDogTests
 {
     public class PathProcessorTests
     {
-        private const string CHANGE_TEXT = "[This is a change]";
-        private const string NEW_TEXT = "Hello World!";
-        private const string ROOT = @"Data";
-        
         public PathProcessorTests()
         {
 
         }
 
-        private void SetupEnvironment()
-        {
-            if (!Directory.Exists(ROOT))
-            {
-                Directory.CreateDirectory(ROOT);
-            }
-            else
-            {
-                string[] fileList = Directory.GetFiles(ROOT);
-
-                foreach (string file in fileList)
-                {
-                    File.Delete(file);
-                }
-
-                string[] dirList = Directory.GetDirectories(ROOT);
-                foreach (string dir in dirList)
-                {
-                    Directory.Delete(dir, true);
-                }
-            }
-        }
-
         [Fact]
         public void ShouldDetectFileChange()
         {
-            SetupEnvironment();
+            FileEnvironment environment = new FileEnvironment();
 
-            string path = $"{ROOT}\\File1.txt";
+            string path = environment.Filename();
 
-            PathProcessor PathProcessor = new PathProcessor(@"Data");
+            PathProcessor PathProcessor = new PathProcessor(environment.Root);
 
             if (!File.Exists(path))
             {
-                AddFile(path);
+                environment.CreateFile(path);
             }
 
             IChangeSet changes = PathProcessor.Run();
 
-            ChangeFile(path);
+            environment.ChangeFile(path);
 
             IChangeSet changes2 = PathProcessor.Run();
 
-            RevertChangeFile(path);
+            environment.Destory();
 
             Assert.NotEmpty(changes2.ChangeItems);
             Assert.Equal(ChangeType.Binary, changes2.ChangeItems[0].ChangeType);
@@ -74,17 +48,19 @@ namespace WatchDogTests
         [Fact]
         public void ShouldDetectFileAdd()
         {
-            SetupEnvironment();
+            FileEnvironment environment = new FileEnvironment();
 
-            string path = $"{ROOT}\\File2.txt";
+            string path = environment.Filename();
 
-            PathProcessor PathProcessor = new PathProcessor(@"Data");
+            PathProcessor PathProcessor = new PathProcessor(environment.Root);
 
             IChangeSet changes = PathProcessor.Run();
 
-            AddFile(path);
+            environment.CreateFile(path);
 
             IChangeSet changes2 = PathProcessor.Run();
+
+            environment.Destory();
 
             Assert.NotEmpty(changes2.ChangeItems);
             Assert.Equal(ChangeType.Created, changes2.ChangeItems[0].ChangeType);
@@ -94,24 +70,24 @@ namespace WatchDogTests
         [Fact]
         public void ShouldDetectFileRemove()
         {
-            SetupEnvironment();
+            FileEnvironment environment = new FileEnvironment();
 
-            string pathToAdd = $"{ROOT}\\File3.txt";
-            string pathToRemove = $"{ROOT}\\File3.txt";
+            string pathToAdd = environment.Filename();
+            string pathToRemove = pathToAdd;
 
-            PathProcessor PathProcessor = new PathProcessor(@"Data");
-
-            var pp = new PathProcessor(@"Data");
+            PathProcessor PathProcessor = new PathProcessor(environment.Root);
 
             PathProcessor.Run();
 
-            AddFile(pathToAdd);
+            environment.CreateFile(pathToAdd);
 
             PathProcessor.Run();
 
-            RemoveFile(pathToRemove);
+            environment.RemoveFile(pathToRemove);
 
             IChangeSet changes2 = PathProcessor.Run();
+
+            environment.Destory();
 
             Assert.NotEmpty(changes2.ChangeItems);
             Assert.Equal(ChangeType.Deleted, changes2.ChangeItems[0].ChangeType);
@@ -121,16 +97,14 @@ namespace WatchDogTests
         [Fact]
         public void ShouldDetectFileRename()
         {
-            SetupEnvironment();
+            FileEnvironment environment = new FileEnvironment();
 
-            string pathToAdd = $"{ROOT}\\File1.txt";
-            string renameTo = $"{ROOT}\\File2.txt";
+            string pathToAdd = environment.Filename();
+            string renameTo = environment.Filename();
 
-            PathProcessor PathProcessor = new PathProcessor(@"Data");
+            PathProcessor PathProcessor = new PathProcessor(environment.Root);
 
-            var pp = new PathProcessor(@"Data");
-
-            AddFile(pathToAdd);
+            environment.CreateFile(pathToAdd);
 
             PathProcessor.Run();
 
@@ -138,53 +112,11 @@ namespace WatchDogTests
 
             IChangeSet changes2 = PathProcessor.Run();
 
+            environment.Destory();
+
             Assert.NotEmpty(changes2.ChangeItems);
             Assert.Equal(ChangeType.Renamed, changes2.ChangeItems[0].ChangeType);
             Assert.Equal(ResourceType.File, changes2.ChangeItems[0].ResourceType);
-        }
-
-        private void ChangeFile(string path)
-        {
-            using (StreamWriter sw = new StreamWriter(path, true))
-            {
-                sw.WriteLine(CHANGE_TEXT);
-            }
-        }
-
-        private void AddFile(string path)
-        {
-            using (StreamWriter sw = File.CreateText(path))
-            {
-                sw.WriteLine(NEW_TEXT);
-            }
-        }
-
-        private void RemoveFile(string path)
-        {
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-        }
-
-        private void RevertChangeFile(string path)
-        {
-            string contents = null;
-
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                using (StreamReader sr = new StreamReader(fs))
-                {
-                    contents = sr.ReadToEnd();
-                }
-            }
-
-            contents = contents.Replace(CHANGE_TEXT, "");
-
-            using (StreamWriter sw = new StreamWriter(path))
-            {
-                sw.Write(contents);
-            }
         }
     }
 }

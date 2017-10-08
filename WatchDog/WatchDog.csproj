@@ -63,7 +63,7 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Paths\PathHelper.cs" />
-    <Compile Include="Comparison\ComparatorFactory.cs" />
+    <Compile Include="Comparison\ResourceComparatorFactory.cs" />
     <Compile Include="Snapshots\FileResourceSnapshot.cs" />
     <Compile Include="Snapshots\DirectoryResourceSnapshot.cs" />
     <Compile Include="Paths\PathProcessor.cs" />
