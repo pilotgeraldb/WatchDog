@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WatchDog.Hash;
+using WatchDog.Extensions;
 
 namespace WatchDog.Files
 {
@@ -26,7 +26,7 @@ namespace WatchDog.Files
 
             using (FileStream stream = File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                hash = WatchDogHashHelper.Compute(stream);
+                hash = stream.Hash();
             }
 
             return hash;

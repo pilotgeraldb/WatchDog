@@ -10,20 +10,12 @@ namespace WatchDog
 {
     public abstract class AbstractWatcher : IWatcher
     {
-        //public AbstractWatcher(string path)
-        //{
-        //    Path = path;
-        //}
-
         public string Path { get; set; }
+        public Action<IChangeSet> OnChange { get; private set; }
 
-        public bool IsProcessing { get; set; }
-
-        public bool IsRunning { get; set; }
-
-        public Action<IChangeSet> OnChange { get; set; }
-
-        public IPathProcessor Processor { get { return new PathProcessor(Path); } }
+        protected bool IsProcessing { get; set; }
+        protected bool IsRunning { get; set; }
+        protected IPathProcessor Processor { get { return new PathProcessor(Path); } }
 
         public virtual bool Start()
         {
@@ -37,6 +29,13 @@ namespace WatchDog
             IsRunning = false;
 
             return true;
+        }
+
+        public IWatcher UseChangeHandler(Action<IChangeSet> onChange)
+        {
+            OnChange = onChange;
+
+            return this;
         }
     }
 }
