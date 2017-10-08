@@ -26,12 +26,19 @@ namespace WatchDog.Paths
             IResourceSnapshot previousSnapshot = SnapshotCache.Retrieve(Path);
             IResourceSnapshot currentSnapshot = ResourceSnapshotFactory.GetSnapshot(Path);
 
+            SnapshotCache.Cache(currentSnapshot);
+
+            if (previousSnapshot == null)
+            {
+                previousSnapshot = currentSnapshot;
+            }
+
             IChangeSet changeSet = Comparator.Run(currentSnapshot, previousSnapshot);
 
-            if (changeSet.HasChanges())
-            {
-                SnapshotCache.Cache(currentSnapshot);
-            }
+            //if (changeSet.HasChanges())
+            //{
+            //    SnapshotCache.Cache(currentSnapshot);
+            //}
 
             return changeSet;
         }

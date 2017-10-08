@@ -11,6 +11,7 @@ namespace WatchDog.Caching
     public sealed class SnapshotCache
     {
         private static readonly object CacheLock = new object();
+        private static MemoryCache cache = new MemoryCache("SnapshotCache");
 
         public static void Cache(IResourceSnapshot snapshot)
         {
@@ -18,7 +19,7 @@ namespace WatchDog.Caching
             {
                 lock (CacheLock)
                 {
-                    MemoryCache.Default.Set(snapshot.Path, snapshot, DateTimeOffset.MaxValue);
+                    cache.Set(snapshot.Path, snapshot, DateTimeOffset.MaxValue);
                 }
             }
         }
@@ -29,7 +30,7 @@ namespace WatchDog.Caching
             {
                 lock (CacheLock)
                 {
-                    object result = MemoryCache.Default.Get(path);
+                    object result = cache.Get(path);
 
                     return (result != null) ? (IResourceSnapshot)result : null;
                 }
