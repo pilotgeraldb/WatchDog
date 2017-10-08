@@ -68,3 +68,6 @@ If you would like to build your own watcher from the groud up then you can simpl
         public bool Stop() { }
     }
 ```
+
+## Limitations
+WatchDog will not detect changes when watching a directory/file under the following conditions. Changing the watched directory/file to another state and returning that state back to its original state before the next poll interval. This will not fire the OnChange event.
