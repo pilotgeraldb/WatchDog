@@ -6,7 +6,7 @@ An extendable, simple and fluent file system watcher for .NET
 
 The `PollingWatcher` is the default file system watcher in WatchDog. It is a polling watcher that polls the directory every 100ms by default.
 
-### Basic Setup
+## Basic Setup
 
 Create a new `WatchDogHost` and add a `PollingWatcher`
 
@@ -26,7 +26,7 @@ h.AddWatcher(new PollingWatcher(@"", 500)
 h.Start();
 ```
 
-#### Change Event Handler
+## Change Event Handler
 
 Using the change handler method to do something
 
@@ -43,7 +43,7 @@ void ChangeEventHandler(IChangeSet changeSet)
 }
 ```
 
-#### Custom Watchers
+## Custom Watchers
 
 The easiest way to create a custom watcher is to take advantage of the default functionality by inheriting from `AbstractWatcher`
 
