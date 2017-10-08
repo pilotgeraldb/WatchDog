@@ -35,11 +35,6 @@ namespace WatchDog.Paths
 
             IChangeSet changeSet = Comparator.Run(currentSnapshot, previousSnapshot);
 
-            //if (changeSet.HasChanges())
-            //{
-            //    SnapshotCache.Cache(currentSnapshot);
-            //}
-
             return changeSet;
         }
     }

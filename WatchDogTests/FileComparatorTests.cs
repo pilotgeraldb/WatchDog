@@ -19,13 +19,11 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string path1 = environment.Filename();
-            environment.CreateFile(path1);
+            string path1 = environment.CreateFile();
             environment.ChangeFile(path1);
             var frs1 = new FileResourceSnapshot(path1);
 
-            string path2 = environment.Filename();
-            environment.CreateFile(path2);
+            string path2 = environment.CreateFile();
             var frs2 = new FileResourceSnapshot(path2);
 
             FileComparator fc = new FileComparator();
@@ -43,8 +41,7 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string path1 = environment.Filename();
-            environment.CreateFile(path1);
+            string path1 = environment.CreateFile();
             environment.ChangeFile(path1);
             var frs1 = new FileResourceSnapshot(path1);
 
@@ -67,8 +64,7 @@ namespace WatchDogTests
 
             FileResourceSnapshot frs1 = null;
 
-            string path2 = environment.Filename();
-            environment.CreateFile(path2);
+            string path2 = environment.CreateFile();
             var frs2 = new FileResourceSnapshot(path2);
 
             FileComparator fc = new FileComparator();

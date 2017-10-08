@@ -29,9 +29,7 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string path = environment.Filename();
-
-            environment.CreateFile(path);
+            string path = environment.CreateFile();
 
             IResourceComparator rc = ResourceComparatorFactory.GetComparator(path);
 

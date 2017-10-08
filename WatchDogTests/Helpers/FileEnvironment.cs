@@ -60,12 +60,16 @@ namespace WatchDogTests.Helpers
             }
         }
 
-        public void CreateFile(string path)
+        public string CreateFile()
         {
-            using (StreamWriter sw = File.CreateText(path))
+            string filename = Filename();
+
+            using (StreamWriter sw = File.CreateText(filename))
             {
                 sw.WriteLine(ADD_TEXT);
             }
+
+            return filename;
         }
 
         public void RemoveFile(string path)

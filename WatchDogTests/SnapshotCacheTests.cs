@@ -18,9 +18,7 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string testpath = environment.Filename();
-
-            environment.CreateFile(testpath);
+            string testpath = environment.CreateFile();
 
             SnapshotCache.Cache(new FileResourceSnapshot(testpath));
 

@@ -23,14 +23,9 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string path = environment.Filename();
+            string path = environment.CreateFile();
 
             PathProcessor PathProcessor = new PathProcessor(environment.Root);
-
-            if (!File.Exists(path))
-            {
-                environment.CreateFile(path);
-            }
 
             IChangeSet changes = PathProcessor.Run();
 
@@ -50,13 +45,11 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string path = environment.Filename();
-
             PathProcessor PathProcessor = new PathProcessor(environment.Root);
 
             IChangeSet changes = PathProcessor.Run();
 
-            environment.CreateFile(path);
+            string path = environment.CreateFile();
 
             IChangeSet changes2 = PathProcessor.Run();
 
@@ -72,18 +65,15 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string pathToAdd = environment.Filename();
-            string pathToRemove = pathToAdd;
-
             PathProcessor PathProcessor = new PathProcessor(environment.Root);
 
             PathProcessor.Run();
 
-            environment.CreateFile(pathToAdd);
+            string pathToAdd = environment.CreateFile();
 
             PathProcessor.Run();
 
-            environment.RemoveFile(pathToRemove);
+            environment.RemoveFile(pathToAdd);
 
             IChangeSet changes2 = PathProcessor.Run();
 
@@ -99,12 +89,11 @@ namespace WatchDogTests
         {
             FileEnvironment environment = new FileEnvironment();
 
-            string pathToAdd = environment.Filename();
             string renameTo = environment.Filename();
 
             PathProcessor PathProcessor = new PathProcessor(environment.Root);
 
-            environment.CreateFile(pathToAdd);
+            string pathToAdd = environment.CreateFile();
 
             PathProcessor.Run();
 
