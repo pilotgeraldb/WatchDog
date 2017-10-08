@@ -10,11 +10,6 @@ namespace WatchDog
 {
     public abstract class AbstractWatcher : IWatcher
     {
-        //public AbstractWatcher(string path)
-        //{
-        //    Path = path;
-        //}
-
         public string Path { get; set; }
 
         public bool IsProcessing { get; set; }

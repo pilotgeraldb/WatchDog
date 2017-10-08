@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WatchDog.Hash;
+using WatchDog.Extensions;
 
 namespace WatchDog.Snapshots
 {
@@ -15,7 +15,7 @@ namespace WatchDog.Snapshots
             {
                 string files = string.Join("", snapshot.Files.Select(x => x.Hash));
 
-                return WatchDogHashHelper.Compute(files);
+                return files.Hash();
             }
 
             return null;

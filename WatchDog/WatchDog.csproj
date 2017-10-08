@@ -59,6 +59,9 @@
     <Compile Include="Changes\IChangeSet.cs" />
     <Compile Include="Comparison\FileComparator.cs" />
     <Compile Include="Comparison\DirectoryComparator.cs" />
+    <Compile Include="Extensions\ByteArrayExtensions.cs" />
+    <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Paths\PathHelper.cs" />
     <Compile Include="Comparison\ComparatorFactory.cs" />
     <Compile Include="Snapshots\FileResourceSnapshot.cs" />
@@ -71,7 +74,6 @@
     <Compile Include="Paths\IPathProcessor.cs" />
     <Compile Include="Files\FileItem.cs" />
     <Compile Include="Files\IFileItem.cs" />
-    <Compile Include="Hash\WatchDogHashHelper.cs" />
     <Compile Include="IPollable.cs" />
     <Compile Include="IWatcher.cs" />
     <Compile Include="Snapshots\IResourceSnapshotExtensions.cs" />
